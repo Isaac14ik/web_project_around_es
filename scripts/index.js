@@ -30,3 +30,8 @@ initialCards.forEach((card) => {
   
 console.log(card.name);
 })
+
+const modalProfile = document.querySelector('.popup'); 
+
+const editButton = document.querySelector('.profile__edit-button');
+const closeButton = document.querySelector('.popup__close-button');
