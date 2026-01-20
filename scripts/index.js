@@ -25,15 +25,47 @@ const initialCards = [
   }
 ];
 
-const modalProfile = document.querySelector('.popup');
-const editButton = document.querySelector('.profile__edit-button');
-const closeButton = document.querySelector('.popup__close-button');
-const profileForm = document.querySelector('.popup__form');
+// Selectores
+const cardsContainer = document.querySelector('.cards__list');
+const cardTemplate = document.querySelector('#card-template').content;
 
-const profileName = document.querySelector('.profile__name');
-const profileJob = document.querySelector('.profile__job');
+const modalProfile = document.querySelector('#edit-popup');
+const editButton = document.querySelector('.profile__edit-button');
+const closeProfileButton = modalProfile.querySelector('.popup__close');
+const profileForm = document.querySelector('#edit-profile-form');
+
+const profileName = document.querySelector('.profile__title');
+const profileJob = document.querySelector('.profile__description');
 const nameInput = document.querySelector('.popup__input_type_name');
-const jobInput = document.querySelector('.popup__input_type_job');
+const jobInput = document.querySelector('.popup__input_type_description');
+
+// --- FUNCIONES DE TARJETAS ---
+
+/**
+ * Crea un elemento de tarjeta a partir de un objeto de datos.
+ * Utiliza parámetros predeterminados para manejar datos incompletos.
+ */
+function getCardElement(data = { name: "Lugar desconocido", link: "https://via.placeholder.com/400" }) {
+  const cardElement = cardTemplate.querySelector('.card').cloneNode(true);
+  const cardImage = cardElement.querySelector('.card__image');
+  const cardTitle = cardElement.querySelector('.card__title');
+
+  cardImage.src = data.link;
+  cardImage.alt = data.name;
+  cardTitle.textContent = data.name;
+
+  return cardElement;
+}
+
+/**
+ * Renderiza una tarjeta en el contenedor especificado.
+ */
+function renderCard(data, container) {
+  const cardElement = getCardElement(data);
+  container.prepend(cardElement);
+}
+
+// --- FUNCIONES DE MODALES ---
 
 function openModal(modal) {
   modal.classList.add('popup_opened');
@@ -60,10 +92,14 @@ function handleProfileFormSubmit(evt) {
   closeModal(modalProfile);
 }
 
+// --- EVENT LISTENERS ---
+
 editButton.addEventListener('click', handleOpenEditModal);
-closeButton.addEventListener('click', () => closeModal(modalProfile));
+closeProfileButton.addEventListener('click', () => closeModal(modalProfile));
 profileForm.addEventListener('submit', handleProfileFormSubmit);
 
+// --- RENDERIZADO INICIAL ---
+
 initialCards.forEach((card) => {
-  console.log(card.name);
+  renderCard(card, cardsContainer);
 });
