@@ -1,28 +1,10 @@
 const initialCards = [
-  {
-    name: "Valle de Yosemite",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/new-markets/WEB_sprint_5/es/yosemite.jpg"
-  },
-  {
-    name: "Lago Louise",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/new-markets/WEB_sprint_5/es/lake-louise.jpg"
-  },
-  {
-    name: "Montañas Calvas",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/new-markets/WEB_sprint_5/es/bald-mountains.jpg"
-  },
-  {
-    name: "Latemar",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/new-markets/WEB_sprint_5/es/latemar.jpg"
-  },
-  {
-    name: "Parque Nacional de la Vanoise",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/new-markets/WEB_sprint_5/es/vanoise.jpg"
-  },
-  {
-    name: "Lago di Braies",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/new-markets/WEB_sprint_5/es/lago.jpg"
-  }
+  { name: "Valle de Yosemite", link: "https://practicum-content.s3.us-west-1.amazonaws.com/new-markets/WEB_sprint_5/es/yosemite.jpg" },
+  { name: "Lago Louise", link: "https://practicum-content.s3.us-west-1.amazonaws.com/new-markets/WEB_sprint_5/es/lake-louise.jpg" },
+  { name: "Montañas Calvas", link: "https://practicum-content.s3.us-west-1.amazonaws.com/new-markets/WEB_sprint_5/es/bald-mountains.jpg" },
+  { name: "Latemar", link: "https://practicum-content.s3.us-west-1.amazonaws.com/new-markets/WEB_sprint_5/es/latemar.jpg" },
+  { name: "Parque Nacional de la Vanoise", link: "https://practicum-content.s3.us-west-1.amazonaws.com/new-markets/WEB_sprint_5/es/vanoise.jpg" },
+  { name: "Lago di Braies", link: "https://practicum-content.s3.us-west-1.amazonaws.com/new-markets/WEB_sprint_5/es/lago.jpg" }
 ];
 
 const cardsContainer = document.querySelector('.cards__list');
@@ -32,7 +14,6 @@ const modalProfile = document.querySelector('#edit-popup');
 const editButton = document.querySelector('.profile__edit-button');
 const closeProfileButton = modalProfile.querySelector('.popup__close');
 const profileForm = document.querySelector('#edit-profile-form');
-
 const profileName = document.querySelector('.profile__title');
 const profileJob = document.querySelector('.profile__description');
 const nameInput = document.querySelector('.popup__input_type_name');
@@ -42,7 +23,6 @@ const modalNewCard = document.querySelector('#new-card-popup');
 const addButton = document.querySelector('.profile__add-button');
 const closeNewCardButton = modalNewCard.querySelector('.popup__close');
 const newCardForm = document.querySelector('#new-card-form');
-
 const cardTitleInput = document.querySelector('.popup__input_type_card-name');
 const cardLinkInput = document.querySelector('.popup__input_type_url');
 
@@ -67,27 +47,30 @@ function handleDeleteCard(evt) {
   evt.target.closest('.card').remove();
 }
 
-function handlePreviewImage(data) {
-  modalImageElement.src = data.link;
-  modalImageElement.alt = data.name;
-  modalImageCaption.textContent = data.name;
+function handlePreviewImage(name, link) {
+  modalImageElement.src = link;
+  modalImageElement.alt = name;
+  modalImageCaption.textContent = name;
   openModal(modalImage);
 }
 
-function getCardElement(data = { name: "Lugar desconocido", link: "https://via.placeholder.com/400" }) {
+function getCardElement({ name = "Sin título", link = "./images/placeholder.jpg" } = {}) {
   const cardElement = cardTemplate.querySelector('.card').cloneNode(true);
   const cardImage = cardElement.querySelector('.card__image');
   const cardTitle = cardElement.querySelector('.card__title');
   const likeButton = cardElement.querySelector('.card__like-button');
   const deleteButton = cardElement.querySelector('.card__delete-button');
 
-  cardImage.src = data.link;
-  cardImage.alt = data.name;
-  cardTitle.textContent = data.name;
+  const finalName = name || "Sin título";
+  const finalLink = link || "./images/placeholder.jpg";
+
+  cardImage.src = finalLink;
+  cardImage.alt = finalName;
+  cardTitle.textContent = finalName;
 
   likeButton.addEventListener('click', handleLikeIcon);
   deleteButton.addEventListener('click', handleDeleteCard);
-  cardImage.addEventListener('click', () => handlePreviewImage(data));
+  cardImage.addEventListener('click', () => handlePreviewImage(finalName, finalLink));
 
   return cardElement;
 }
