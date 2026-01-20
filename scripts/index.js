@@ -25,7 +25,6 @@ const initialCards = [
   }
 ];
 
-// Selectores
 const cardsContainer = document.querySelector('.cards__list');
 const cardTemplate = document.querySelector('#card-template').content;
 
@@ -39,12 +38,22 @@ const profileJob = document.querySelector('.profile__description');
 const nameInput = document.querySelector('.popup__input_type_name');
 const jobInput = document.querySelector('.popup__input_type_description');
 
-// --- FUNCIONES DE TARJETAS ---
+const modalNewCard = document.querySelector('#new-card-popup');
+const addButton = document.querySelector('.profile__add-button');
+const closeNewCardButton = modalNewCard.querySelector('.popup__close');
+const newCardForm = document.querySelector('#new-card-form');
 
-/**
- * Crea un elemento de tarjeta a partir de un objeto de datos.
- * Utiliza parámetros predeterminados para manejar datos incompletos.
- */
+const cardTitleInput = document.querySelector('.popup__input_type_card-name');
+const cardLinkInput = document.querySelector('.popup__input_type_url');
+
+function openModal(modal) {
+  modal.classList.add('popup_opened');
+}
+
+function closeModal(modal) {
+  modal.classList.remove('popup_opened');
+}
+
 function getCardElement(data = { name: "Lugar desconocido", link: "https://via.placeholder.com/400" }) {
   const cardElement = cardTemplate.querySelector('.card').cloneNode(true);
   const cardImage = cardElement.querySelector('.card__image');
@@ -57,31 +66,14 @@ function getCardElement(data = { name: "Lugar desconocido", link: "https://via.p
   return cardElement;
 }
 
-/**
- * Renderiza una tarjeta en el contenedor especificado.
- */
 function renderCard(data, container) {
   const cardElement = getCardElement(data);
   container.prepend(cardElement);
 }
 
-// --- FUNCIONES DE MODALES ---
-
-function openModal(modal) {
-  modal.classList.add('popup_opened');
-}
-
-function closeModal(modal) {
-  modal.classList.remove('popup_opened');
-}
-
-function fillProfileForm() {
+function handleOpenEditModal() {
   nameInput.value = profileName.textContent;
   jobInput.value = profileJob.textContent;
-}
-
-function handleOpenEditModal() {
-  fillProfileForm();
   openModal(modalProfile);
 }
 
@@ -92,13 +84,24 @@ function handleProfileFormSubmit(evt) {
   closeModal(modalProfile);
 }
 
-// --- EVENT LISTENERS ---
+function handleCardFormSubmit(evt) {
+  evt.preventDefault();
+  const newCardData = {
+    name: cardTitleInput.value,
+    link: cardLinkInput.value
+  };
+  renderCard(newCardData, cardsContainer);
+  closeModal(modalNewCard);
+  newCardForm.reset();
+}
 
 editButton.addEventListener('click', handleOpenEditModal);
 closeProfileButton.addEventListener('click', () => closeModal(modalProfile));
 profileForm.addEventListener('submit', handleProfileFormSubmit);
 
-// --- RENDERIZADO INICIAL ---
+addButton.addEventListener('click', () => openModal(modalNewCard));
+closeNewCardButton.addEventListener('click', () => closeModal(modalNewCard));
+newCardForm.addEventListener('submit', handleCardFormSubmit);
 
 initialCards.forEach((card) => {
   renderCard(card, cardsContainer);
