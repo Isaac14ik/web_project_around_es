@@ -46,6 +46,11 @@ const newCardForm = document.querySelector('#new-card-form');
 const cardTitleInput = document.querySelector('.popup__input_type_card-name');
 const cardLinkInput = document.querySelector('.popup__input_type_url');
 
+const modalImage = document.querySelector('#image-popup');
+const modalImageElement = modalImage.querySelector('.popup__image');
+const modalImageCaption = modalImage.querySelector('.popup__caption');
+const closeImageButton = modalImage.querySelector('.popup__close');
+
 function openModal(modal) {
   modal.classList.add('popup_opened');
 }
@@ -62,6 +67,13 @@ function handleDeleteCard(evt) {
   evt.target.closest('.card').remove();
 }
 
+function handlePreviewImage(data) {
+  modalImageElement.src = data.link;
+  modalImageElement.alt = data.name;
+  modalImageCaption.textContent = data.name;
+  openModal(modalImage);
+}
+
 function getCardElement(data = { name: "Lugar desconocido", link: "https://via.placeholder.com/400" }) {
   const cardElement = cardTemplate.querySelector('.card').cloneNode(true);
   const cardImage = cardElement.querySelector('.card__image');
@@ -75,6 +87,7 @@ function getCardElement(data = { name: "Lugar desconocido", link: "https://via.p
 
   likeButton.addEventListener('click', handleLikeIcon);
   deleteButton.addEventListener('click', handleDeleteCard);
+  cardImage.addEventListener('click', () => handlePreviewImage(data));
 
   return cardElement;
 }
@@ -115,6 +128,8 @@ profileForm.addEventListener('submit', handleProfileFormSubmit);
 addButton.addEventListener('click', () => openModal(modalNewCard));
 closeNewCardButton.addEventListener('click', () => closeModal(modalNewCard));
 newCardForm.addEventListener('submit', handleCardFormSubmit);
+
+closeImageButton.addEventListener('click', () => closeModal(modalImage));
 
 initialCards.forEach((card) => {
   renderCard(card, cardsContainer);
