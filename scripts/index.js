@@ -48,35 +48,32 @@ function handleDeleteCard(evt) {
 }
 
 function handlePreviewImage(name, link) {
+  modalImageCaption.textContent = name;
   modalImageElement.src = link;
   modalImageElement.alt = name;
-  modalImageCaption.textContent = name;
   openModal(modalImage);
 }
 
-function getCardElement({ name = "Sin título", link = "./images/placeholder.jpg" } = {}) {
+function getCardElement(name = "Sin título", link = "./images/placeholder.jpg") {
   const cardElement = cardTemplate.querySelector('.card').cloneNode(true);
-  const cardImage = cardElement.querySelector('.card__image');
   const cardTitle = cardElement.querySelector('.card__title');
+  const cardImage = cardElement.querySelector('.card__image');
   const likeButton = cardElement.querySelector('.card__like-button');
   const deleteButton = cardElement.querySelector('.card__delete-button');
 
-  const finalName = name || "Sin título";
-  const finalLink = link || "./images/placeholder.jpg";
-
-  cardImage.src = finalLink;
-  cardImage.alt = finalName;
-  cardTitle.textContent = finalName;
+  cardTitle.textContent = name;
+  cardImage.src = link;
+  cardImage.alt = name;
 
   likeButton.addEventListener('click', handleLikeIcon);
   deleteButton.addEventListener('click', handleDeleteCard);
-  cardImage.addEventListener('click', () => handlePreviewImage(finalName, finalLink));
+  cardImage.addEventListener('click', () => handlePreviewImage(name, link));
 
   return cardElement;
 }
 
-function renderCard(data, container) {
-  const cardElement = getCardElement(data);
+function renderCard(name, link, container) {
+  const cardElement = getCardElement(name, link);
   container.prepend(cardElement);
 }
 
@@ -95,11 +92,9 @@ function handleProfileFormSubmit(evt) {
 
 function handleCardFormSubmit(evt) {
   evt.preventDefault();
-  const newCardData = {
-    name: cardTitleInput.value,
-    link: cardLinkInput.value
-  };
-  renderCard(newCardData, cardsContainer);
+  const name = cardTitleInput.value;
+  const link = cardLinkInput.value;
+  renderCard(name, link, cardsContainer);
   closeModal(modalNewCard);
   newCardForm.reset();
 }
@@ -115,5 +110,5 @@ newCardForm.addEventListener('submit', handleCardFormSubmit);
 closeImageButton.addEventListener('click', () => closeModal(modalImage));
 
 initialCards.forEach((card) => {
-  renderCard(card, cardsContainer);
+  renderCard(card.name, card.link, cardsContainer);
 });
