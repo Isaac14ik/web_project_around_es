@@ -40,7 +40,7 @@ function closeModal(modal) {
 }
 
 function handleLikeIcon(evt) {
-  evt.target.classList.toggle('card__like-button_active');
+  evt.target.classList.toggle('card__like-button');
 }
 
 function handleDeleteCard(evt) {
