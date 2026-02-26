@@ -40,3 +40,4 @@ Proyecto interactivo que permite a los usuarios compartir y visualizar lugares d
 * Persistencia de datos mediante el uso de APIs o almacenamiento local.
 * Cierre de modales al hacer clic fuera del contenido o presionar la tecla Esc.
 * Se agrega Figma para poder adaptar la pagina a telefonos
+* Agregue card.js y FormValidator para de esa manera poder hacer export de codigo de manera mas eficiente y organizada
